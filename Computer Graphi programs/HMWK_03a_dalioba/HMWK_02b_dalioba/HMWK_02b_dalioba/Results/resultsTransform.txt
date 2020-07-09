@@ -1,0 +1,2 @@
+Values          : (145.0, 140.0, 70.0, 40.0)
+Test transform  : ax 145.0, ay 140.0, sx 70.0, sy 40.0

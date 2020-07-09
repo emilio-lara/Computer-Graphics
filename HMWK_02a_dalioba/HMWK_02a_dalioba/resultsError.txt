@@ -1,0 +1,13 @@
+Line 6 'w   -0.480000   NotAFloat    0.480000    0.480000' is unrecognized.
+Line 7 's    0.100000    0.100000   NotAFloat    0.900000' is unrecognized.
+Line 10 is a malformed vertex spec.
+Line 16 is a malformed face spec.
+Line 19 is a malformed face spec.
+Line 23 'w 1 2 3 4' is unrecognized.
+Line 27 's 5 6 7 8' is unrecognized.
+Line 32 'w  9 10 11 12' is unrecognized.
+Line 33 's 13 14 15 16' is unrecognized.
+errors.txt: 1 vertex, 0 faces
+First 3 vertices:
+     (1.0, 2.0, 3.0)
+First 3 faces:

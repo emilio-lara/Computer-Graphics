@@ -1,0 +1,190 @@
+#----------------------------------------------------------------------
+Programming Assignment 04a
+
+#----------------------------------------------------------------------
+Purpose:
+
+  * Add Euler rotation to the clipping, parallel / perspective
+    projection mesh display program.
+
+#----------------------------------------------------------------------
+Background:
+
+  * In PA 03c, you enhanced the mesh display program to include
+    selectable parallel / perspective projection.
+
+  * The next step is to allow the user to select whether the
+    model should be Euler rotated and, in the rotating case,
+    permit the adjustment of the phi, theta, and psi angles.
+
+  * The Eule rotation mode will be selected using another Settings
+    menu entry.  The phi, theta, and psi angles will be set using
+    askfloat dialog boxes triggered by button presses.
+
+  * The Euler rotation is carried out using the method described
+    in the handout "4303 Euler Angle Transform.pdf" (distributed
+    on 2019 Feb 13 in the Course Materials section on Blackboard).
+
+#----------------------------------------------------------------------
+Tasks:
+
+  1. Download HMWK_04a_dalioba.zip from Blackboard.
+
+  2. Unzip the file somewhere convenient.
+
+  3. Change 'dalioba' in the name of the directory to your NetID.
+     (Your NetID is three letters followed by four or five digits.
+      The directory name will now be something like
+      'hmwk_04a_abc1234'.)
+
+  4. Look in that directory.
+
+  5. Surprise!  There are NO Python files.  You should use your
+     files from PA 03c as the basis for this assignment.
+
+  6. You have to make some changes to the myWidgets.py file to
+     supply the 'Euler' entry in the settings menu and to
+     add 'φ', 'θ', and 'ψ' buttons to the toolbar.
+
+  7. There are some changes to the ModelData.py file so that the
+     Euler angles can be specified (and R00-R22, ex, ey, and ez
+     can be calculated and remembered).  Also, the transformation
+     of vertices now has to take the possibility of Euler rotation
+     into account.
+
+  8. You next have to make some changes to the myGraphics.py file
+     so the create_graphic_objects() method will accept the
+     'Euler' setting and then use that setting when transforming
+     vertices from world space to screen space.
+
+  9. Try out your nifty Euler rotating, perspective-or-parallel
+     projecting mesh clipping and drawing program using the
+     monkey.txt mesh.  Turn Euler rotation on and off and set the
+     angles to various values to see the effect on the display.
+     The face is about 1 unit high, so set the view distance to a
+     number greater than that.  Turn clipping on and off to see
+     the effect on the display.  Turn perspective projection on
+     and off to see the effect on the display.
+
+     You should see something like what's shown in the screenshot
+     files.  (The names of the screenshot files include the Euler
+     angles, view distance, and whether Euler and clipping were on
+     or off and whether perspective or parallel projection was
+     used.)
+
+#----------------------------------------------------------------------
+Submission:
+
+Make a zipfile of your 'hmwk_04a_abc1234' directory (where
+'abc1234' is replaced with YOUR NetID) and submit it on
+Blackboard as your results for this assignment.
+
+Your submission should be a zipfile that has exactly one item in
+it, a directory named 'hmwk_04a_abc1234' (where 'abc1234' is
+YOUR NetID).  Inside that directory should be the source files
+for your solution.  All you really need to submit are the Python
+files (ModelData.py, constructTransform.py, main.py, myWidgets.py,
+myGraphics.py, and CohenSutherland.py).
+
+#----------------------------------------------------------------------
+Hints:
+  1. Ensure your submission is packaged EXACTLY as described
+     above.  Submissions in the wrong format score ZERO points.
+
+  2. As a reminder from the previous assignment, you can prompt
+     the user for a float value by using the
+     simple.dialog.askfloat() function call:
+
+        f = simpledialog.askfloat( "Title", "Prompt?",
+              initialvalue = theOldValue, minvalue = someMinVal )
+
+     On return, if f is None, that means the user hit the Cancel
+     button.  theOldValue will appear already entered in the
+     dialog.  minvalue is the least value that the user is
+     allowed to enter.
+
+  5. FYI, to get all this to work, I made NO changes to the
+     reference implementation of main.py, constructTransform.py,
+     and CohenSutherland.py from PA 03c.
+
+  6. In ModelData.py, create the specifyEuler() method, taking the
+     current phi, theta, and psi angle values (in radians!).
+     In this method, use the angles to compute R00-R22 and
+     remember those values as instance variables.  Then using the
+     R00-R22 values and the model's center, compute the ex, ey,
+     and ez values and remember them as instance variables.  [ All
+     of these computations are described in the Euler rotation
+     handout. ]
+
+     (Twelve (12) variable initializations in the __init__ method
+      and sixteen (16) lines of code in specifyEuler to do the
+      computations.)
+
+     Augment the getTransformedVertex() method to take an
+     additional parameter, doEuler, so it knows whether to
+     do Euler rotation or not.  If doEuler is True, the x, y, and
+     z coordinates must be rotated before doing the projection.
+     (Five (5) new lines of code.)
+
+     Be careful!  If you are doing the rotation, be sure to change
+     the x, y, and z coordinates as a set and not one-by-one!
+
+  7. In myWidgets.py I added two (2) lines of code to
+     cl_widgets > __init__(), to create a tk boolean variable to
+     hold the 'Euler' setting and one (1) line to initialize
+     a spot to remember the angles.
+
+     In the cl_menu > __init__() method, I inserted another check
+     button in the 'Settings' menu with the label 'Euler'. Its
+     variable is the new tk boolean variable created in
+     cl_widgets > __init__().  (One (1) line of code.)
+
+     In the cl_toolbar > __init__() method, I created three new
+     buttons with the texts 'φ', 'θ', and 'ψ' and calling a new
+     method, angle_callback as their command.  (Six (6) lines of
+     code.)  I made these buttons two units wide since the text
+     labels are just one character each.)
+
+     You have to create the angle_callback() as a method of
+     cl_toolbar.  It should pop up the askfloat dialog to get a
+     an angle from the user.  Display a message in the status bar
+     saying whether the user cancelled the operation or what the
+     new angle is if actually entered.  (Thirteen (13) lines of
+     code.)
+
+     Be sure you change the correct angle's value!  Also, be sure
+     you convert the angle to radians (from degrees) when you
+     store it!
+
+     Finally, enhance the cl_toolbar method draw_callback() to
+     get the current angle values and pass them to the
+     specifyEuler call.
+
+     And retrieve the state of the 'Euler' setting by looking at
+     the tk boolean variable created in the
+     cl_widgets > __init__() and to pass its value to
+     create_graphic_objects().  One line of code to retrieve the
+     'Euler' setting and one more added parameter to the
+     create_graphic_objects() call.
+
+  8. The only changes to myGraphics.py were again in the method
+     cl_world > create_graphics_object().  Now it would takes the
+     extra doEuler parameter and passes it along in the
+     calls to getTransformedVertex().  No new lines of code, just
+     that added parameter.
+
+  9. So that's what?  About 60 new lines of code in total?  (Not
+     counting blank lines and the import lines.)
+
+     Not bad for a program that will now display arbtrarily
+     complex meshes possibly Euler rotated and in parallel OR
+     perspective projection and clip triangles that are outside
+     the viewing region.
+
+ 10. The Monkey screenshots were captured with a canvas size of
+     600 x 600.  The Cow screenshots were captured with a canvas
+     size of 830 x 600.  The settings are indicated in the name of
+     the file.  Clipping, Perspective, and Euler rotation were
+     active for all screenshots.
+
+#----------------------------------------------------------------------

@@ -1,0 +1,172 @@
+#----------------------------------------------------------------------
+Programming Assignment 03c
+
+#----------------------------------------------------------------------
+Purpose:
+
+  * Add perspective projection to the clipping, parallel
+    projection mesh display program.
+
+#----------------------------------------------------------------------
+Background:
+
+  * In PA 03b, you enhanced the parallel projection mesh display
+    program to include optional Cohen-Sutherland line clipping.
+
+  * The next step is to allow the user to select whether the
+    projection should be parallel or perspective and, in the
+    perspective case, permit the adjustment of the view distance.
+
+  * The perspective projection mode will be selected using another
+    Settings menu entry.  The view distance will be set using an
+    askfloat dialog box triggered by a button press.
+
+  * The calculation of perspective projection coordinates is
+    carried out using the method described in the handout
+    "4303 Projections.pdf" (distributed on 2019 Feb 20 in the
+    Course Materials section on Blackboard).
+
+#----------------------------------------------------------------------
+Tasks:
+
+  1. Download HMWK_03c_dalioba.zip from Blackboard.
+
+  2. Unzip the file somewhere convenient.
+
+  3. Change 'dalioba' in the name of the directory to your NetID.
+     (Your NetID is three letters followed by four or five digits.
+      The directory name will now be something like
+      'hmwk_03c_abc1234'.)
+
+  4. Look in that directory.
+
+  5. Surprise!  There are NO Python files.  You should use your
+     files from PA 03b as the basis for this assignment.
+
+  6. You have to make some changes to the myWidgets.py file to
+     supply the 'Perspective' entry in the settings menu and to
+     add a 'Distance' button to the toolbar.
+
+  7. There are some changes to the ModelData.py file so that the
+     specified transform now includes the view distance.  Also,
+     the transformation of vertices now has to take the
+     possibility of perspective projection into account.
+
+  8. You next have to make some changes to the myGraphics.py file
+     so the create_graphic_objects() method will accept the
+     'Perspective' setting and then use that setting when
+     transforming vertices from world space to screen space.
+
+  9. Try out your nifty perspective-or-parallel projecting mesh
+     clipping and drawing program using the pillars-nine.txt mesh.
+     The pillars are 10 units high, so set the view distance to a
+     number greater than that.  Turn clipping on and off to see
+     the effect on the display.  Turn perspective projection on
+     and off to see the effect on the display.
+
+     You should see something like what's shown in the screenshot
+     files.  (The names of the screenshot files include the view
+     distance and whether clipping was on or off and whether
+     perspective or parallel projection was used.)
+
+#----------------------------------------------------------------------
+Submission:
+
+Make a zipfile of your 'hmwk_03c_abc1234' directory (where
+'abc1234' is replaced with YOUR NetID) and submit it on
+Blackboard as your results for this assignment.
+
+Your submission should be a zipfile that has exactly one item in
+it, a directory named 'hmwk_03c_abc1234' (where 'abc1234' is
+YOUR NetID).  Inside that directory should be the source files
+for your solution.  All you really need to submit are the Python
+files (ModelData.py, constructTransform.py, main.py, myWidgets.py,
+myGraphics.py, and CohenSutherland.py).
+
+#----------------------------------------------------------------------
+Hints:
+  1. Ensure your submission is packaged EXACTLY as described
+     above.  Submissions in the wrong format score ZERO points.
+
+  2. You can prompt the user for a float value by using the
+     simple.dialog.askfloat() function call:
+
+        f = simpledialog.askfloat( "Title", "Prompt?",
+              initialvalue = theOldValue, minvalue = someMinVal )
+
+     On return, if f is None, that means the user hit the Cancel
+     button.  theOldValue will appear already entered in the
+     dialog.  minvalue is the least value that the user is
+     allowed to enter.
+
+  5. FYI, to get all this to work, I made NO changes to the
+     reference implementation of main.py, constructTransform.py,
+     and CohenSutherland.py from PA 03b.
+
+  6. In ModelData.py, update the specifyTransform() method to take
+     an additional parameter, distance.  Remember this parameter
+     the same way you remember ax, ay, sx, and sy.  (One (1) line
+     of code in the __init__ method to initialize the member
+     variable and one (1) line of code in specifyTransform to
+     remember it.)
+
+     Augment the getTransformedVertex() method to take an
+     additional parameter, doPerspective, so it knows whether to
+     do parallel or perspective projection.  If doPerspective is
+     True, project the vertex's x and y coordinates according to
+     the method given in the handout before doing the sx, sy, ax,
+     ay operations.  (Seven (7) new lines of code.)
+
+     Be careful!  If the distance is 0 or less than or equal to
+     the vertex's z coordinate, map the point to the origin!
+
+  7. In myWidgets.py I added two (2) lines of code to
+     cl_widgets > __init__(), to create a tk boolean variable to
+     hold the 'Perspective' setting and one (1) line to initialize
+     a spot to remember the distance.
+
+     In the cl_menu > __init__() method, I inserted another check
+     button in the 'Settings' menu with the label 'Perspective'.
+     Its variable is the new tk boolean variable created in
+     cl_widgets > __init__().  (One (1) line of code.)
+
+     In the cl_toolbar > __init__() method, create a new button
+     with the text 'Distance' and calling a new method,
+     distance_callback as its command.  (Two (2) lines of code.)
+
+     You have to create the distance_callback() as a method of
+     cl_toolbar.  It should pop up the askfloat dialog to get a
+     view distance from the user.  Display a message in the
+     status bar saying whether the user cancelled the operation or
+     what the new distance is if actually entered.  (Ten (10)
+     lines of code.)
+
+     Finally, enhance the cl_toolbar method draw_callback() to
+     get the current distance and pass it in the specifyTransform
+     call along with ax, ay, sx, and sy.
+
+     And retrieve the state of the 'Perspective' setting by
+     looking at the tk boolean variable created in the
+     cl_widgets > __init__() and to pass its value to
+     create_graphic_objects().  One line of code to retrieve the
+     'Perspective' setting and one more added parameter to the
+     create_graphic_objects() call.
+
+  8. The only changes to myGraphics.py were again in the method
+     cl_world > create_graphics_object().  Now it would takes the
+     extra doPerspective parameter and passes it along in the
+     calls to getTransformedVertex().  No new lines of code, just
+     that added parameter.
+
+  9. So that's what?  About 25 new lines of code in total?  (Not
+     counting blank lines and the import lines.)
+
+     Not bad for a program that will now display arbtrarily
+     complex meshes in parallel OR perspective projection and clip
+     triangles that are outside the viewing region.
+
+ 10. The Pillars screenshots were captured with a canvas size of
+     600 x 600.  The settings for Clipping and Parallel or
+     Perspective projection are indicated in the name of the file.
+
+#----------------------------------------------------------------------

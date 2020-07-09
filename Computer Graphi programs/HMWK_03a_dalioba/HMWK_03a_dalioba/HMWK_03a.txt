@@ -1,0 +1,180 @@
+#----------------------------------------------------------------------
+Programming Assignment 03a
+
+#----------------------------------------------------------------------
+Purpose:
+
+  * Combine ModelData.py, constructTransform.py, and the tkinter
+    framework examples to achieve parallel projection display of meshes.
+
+#----------------------------------------------------------------------
+Background:
+
+  * In PA 01, a basic tkinter framework was shown that can display a
+    canvas with lines drawn upon it.  In PA 02b, ModelData.py got
+    updated to include transformation capability.
+
+  * By bringing together these two items, a simple program to display
+    parallel projected meshes can be created.
+
+  * The functionality will include: (a) loading a mesh file,
+    (b) displaying the loaded mesh by drawing triangles (and the
+    enclosing viewport rectangle), and (c) clearing the display of
+    any drawn triangles (and the viewport rectangle).
+
+#----------------------------------------------------------------------
+Tasks:
+
+  1. Download HMWK_03a_dalioba.zip from Blackboard.
+
+  2. Unzip the file somewhere convenient.
+
+  3. Change 'dalioba' in the name of the directory to your NetID.
+     (Your NetID is three letters followed by four or five digits.
+      The directory name will now be something like
+      'hmwk_03a_abc1234'.)
+
+  4. Look in that directory.
+
+  5. AMAZING!  There are _no_ Python files in which you have to change
+     the header lines.  Instead, use the files ModelData.py,
+     constructTransform.py, main.py, myWidgets.py, and myGraphics.py
+     from PA 01 and 02b.  (You _did_ remember to update the header
+     lines in those files, right?)
+
+  6. To do part (a) mentioned in the Background section above, update
+     the toolbar_load_callback() method to get a filename and (if the
+     user didn't CANCEL) then load the mesh by making (and saving) an
+     instance of ModelData.
+
+  7. To do part (b) mentioned in the Background section above, we first
+     update the ModelData class to allow the specification of a
+     transform and to return transformed vertices.  Write two more
+     methods for the ModelData class:
+
+       * specifyTransform( self, ax, ay, sx, sy ) which just remembers
+         the passed values.  It doesn't have to return anything.
+
+       and
+
+       * getTransformedVertex( self, vNum ) which returns a tuple of
+         x', y', z' values.  x' and y' are computed from vertex number
+         vNum's x and y values according to the remembered ax, ay, sx,
+         and sy values. Since this is a parallel projection onto the
+         XY plane, z' is always 0.0.
+
+     Once the ModelData class is updated, we then update the
+     toolbar_draw_callback() method to:
+
+       * Return at once if a mesh hasn't been loaded.  (Also display
+         a message in the status bar stating that this happened.)
+       * Get the current canvas width and height.
+       * Get the Window and Viewport info from the ModelData instance.
+       * Construct the transform using constructTransform().
+       * Specify the transform to the ModelData instance using the new
+         method specifyTransform() mentioned above.
+       * Invoke the create_graphic_objects() method, passing not only
+         the canvas but also the ModelData instance.
+       * Draw the Viewport rectangle.
+
+     You also have to update the create_graphic_objects() method to
+     take not only a canvas but also a ModelData instance.  That method
+     should
+
+       * For each face from the ModelData instance, get the
+         three vertex numbers for that face.
+       * Get from the ModelData instance the transformed vertex
+         coordinates for v1, v2, and v3 using the getTransformedVertex()
+         method mentioned above.
+       * Draw three lines, v1->v2, v2->v3, and v3->v1.
+
+  8. Part (c) mentioned above doesn't require any work as the
+     toolbar_reset_callback() method already does what's necessary.
+
+  9. Try out your nifty mesh drawing program using the cow.txt and
+     monkey.txt mesh files.  You should see something like what's
+     represented in the screenshot files.
+
+#----------------------------------------------------------------------
+Submission:
+
+Make a zipfile of your 'hmwk_03a_abc1234' directory (where
+'abc1234' is replaced with YOUR NetID) and submit it on
+Blackboard as your results for this assignment.
+
+Your submission should be a zipfile that has exactly one item in
+it, a directory named 'hmwk_03a_abc1234' (where 'abc1234' is
+YOUR NetID).  Inside that directory should be the source files
+for your solution.  All you really need to submit are the Python
+files (ModelData.py, constructTransform.py, main.py, myWidgets.py,
+and myGraphics.py).
+
+#----------------------------------------------------------------------
+Hints:
+  1. Ensure your submission is packaged EXACTLY as described above.
+     Submissions in the wrong format score ZERO points.
+
+  2. To use the file dialog, put these import lines in your Python
+     file (right after the import of tkinter):
+
+        from tkinter import simpledialog
+        from tkinter import filedialog
+
+     You'll then be able to use the filedialog thusly:
+
+        fName = tk.filedialog.askopenfilename( filetypes = [ ( "allfiles", "*" ) ] )
+
+     When it returns, if len( fName ) == 0, that means the user clicked
+     the CANCEL button, so don't try to do a load.  (Also, display a
+     message in the status bar saying this happened.)
+
+  3. Don't forget to import ModelData (from ModelData.py) at the top of
+     myWidgets.py.
+
+  4. Don't forget to constructTransform (from constructTransform.py)
+     at the top of myWidgets.py.
+
+  5. Don't forget that you have to 'intify' the width and height
+     when you retrieve the canvas size.  (For some reason, cget
+     returns them as strings?)
+
+  6. FYI, to get all this to work, I made NO changes to the reference
+     implementation of main.py from PA 01 or to constructTransform.py
+     from PA 02b.
+
+     ModelData.py changed to include the two new methods,
+     specifyTransform() (five (5) lines of code for the method itself
+     and four (4) lines of code to initialize the member variables in
+     the __init__() method) and getTransformedVertex() (three (3) lines
+     of code).
+
+     The only change to myGraphics.py was to update
+     cl_world > create_graphics_object() so that it would take the
+     extra parameter and draw the face triangles.  That function is now
+     six (6) lines of code.
+
+     In myWidgets.py I added one (1) line to cl_widgets > __init__().
+
+     The cl_toolbar > toolbar_load_callback() method gets the
+     filename and if it's not empty creates and saves a ModelData
+     instance.  Six (6) lines of code in total, not counting
+     blank lines.
+
+     The cl_toolbar > toolbar_draw_callback() method ensures there
+     is a loaded ModelData instance, retrieves the canvas size,
+     constructs the transform, specifies the transform, calls the
+     create_graphic_objects method, and then computes and draws the
+     viewport rectangle.  Sixteen (16) lines of code in total, not
+     counting blank lines.
+
+     So that's what?  41 new lines of code?  (Not counting the imports
+     at the top of the Python file.)
+
+     Not bad for a program that will now display arbtrarily complex
+     meshes in parallel projection.
+
+  7. The Monkey.png screenshot was captured with a canvas size of
+     500 x 500.  The Cow.png screenshot was captured with a canvas
+     size of 830 x 500.
+
+#----------------------------------------------------------------------

@@ -1,0 +1,211 @@
+#----------------------------------------------------------------------
+Programming Assignment 04b
+
+#----------------------------------------------------------------------
+Purpose:
+
+  * Add Bézier patch display to the Euler rotating, clipping,
+    parallel and perspective projection mesh display program.
+
+#----------------------------------------------------------------------
+Background:
+
+  * In PA 04a, you enhanced the mesh display program to include
+    Euler rotation of the model.
+
+  * The next step is to allow the model to include Bézier patches
+    and to display those patches with an arbitrary resolution.
+
+  * The resolution will be set using an askinteger dialog box
+    triggered by a button press.
+
+  * The creation of the points of each Bézier patch is carried out
+    using the methods described in the handouts "4303 Bézier.pdf"
+    and "4303 Bézier computation.pdf" (distributed on 2019 Mar 22
+    in the Course Materials section on Blackboard).
+
+#----------------------------------------------------------------------
+Tasks:
+
+  1. Download HMWK_04b_dalioba.zip from Blackboard.
+
+  2. Unzip the file somewhere convenient.
+
+  3. Change 'dalioba' in the name of the directory to your NetID.
+     (Your NetID is three letters followed by four or five digits.
+      The directory name will now be something like
+      'hmwk_04b_abc1234'.)
+
+  4. Look in that directory.
+
+  5. Surprise!  There are NO Python files.  You should use your
+     files from PA 04a as the basis for this assignment.
+
+  6. You have to make some changes to the myWidgets.py file to
+     support the 'Resolution' button in the toolbar and its
+     handling.
+
+  7. There are some changes to the ModelData.py file so that the
+     model file can have the 'p' lines that describe the Bézier
+     patches.
+
+  8. The create_graphic_objects() method in the myGraphics.py
+     file has to accept the resolution parameter and then use that
+     setting when generating the points of each Bézier surface.
+     A separate routine resolveBézierPatch must be created (and
+     should go in its own file) to help create_graphic_objects().
+
+  9. Try out your nifty Bézier surface generating, Euler rotating,
+     perspective-or-parallel projecting mesh clipping and drawing
+     program using the supplied tea set models.
+
+     Change the resolution and redisplay to see the change in the
+     Bézier surface smoothness.  Turn Euler rotation on and off
+     and set the angles to various values to see the effect on the
+     display.  Try the same with clipping as the perspective
+     projection is turned on and off to see the effect on the
+     model display.
+
+     You should see something like what's shown in the screenshot
+     files.
+
+#----------------------------------------------------------------------
+Submission:
+
+Make a zipfile of your 'hmwk_04b_abc1234' directory (where
+'abc1234' is replaced with YOUR NetID) and submit it on
+Blackboard as your results for this assignment.
+
+Your submission should be a zipfile that has exactly one item in
+it, a directory named 'hmwk_04b_abc1234' (where 'abc1234' is
+YOUR NetID).  Inside that directory should be the source files
+for your solution.  All you really need to submit are the Python
+files (ModelData.py, constructTransform.py, main.py, myWidgets.py,
+myGraphics.py, CohenSutherland.py, and any other Python files
+you may have created).
+
+#----------------------------------------------------------------------
+Hints:
+  1. Ensure your submission is packaged EXACTLY as described
+     above.  Submissions in the wrong format score ZERO points.
+
+  2. The simple.dialog.askinteger() function call works similarly
+     the float version, differing in that it takes and returns
+     integer values instead of floats.
+
+  3. FYI, to get all this to work, I made NO changes to the
+     reference implementation of main.py, constructTransform.py,
+     and CohenSutherland.py from PA 04a.
+
+  4. In myWidgets.py I added one (1) line of code to
+     cl_widgets > __init__(), to create a have a spot to
+     remember the resolution.  The resolution should be
+     initialized to 4 and that's the minimum value that should be
+     allowed.
+
+     In the cl_toolbar > __init__() method, I created a new button
+     with the text 'Resolution' and calling a new method,
+     resolution_callback as the command.  (Two (2) lines of code.)
+
+     You have to create the resolution_callback() as a method of
+     cl_toolbar.  It should pop up the askinteger dialog to get a
+     a resolution from the user.  Display a message in the status
+     bar saying whether the user cancelled the operation or what
+     the new angle is if actually entered.  (Ten (10) lines of
+     code.)
+
+     Be sure you don't let the resolution go below 4!
+
+     Finally, enhance the cl_toolbar method draw_callback() to
+     get the current resolution and pass it as one more parameter
+     to the create_graphic_objects() call.
+
+  5. In ModelData.py, add processing to the ModelData > loadFile
+     method to accept 'p' lines, which represent the Bézier
+     patches.  These can be processed similarly to the 'f' lines
+     except that instead of the three vertex numbers that the 'f'
+     lines have, 'p' lines have 16 vertex numbers.
+
+     All 16 must be integers (and don't forget to subtract one
+     from each).  Just as with faces, keep the patches in a list
+     of tuples.  (I called my list m_Patches.)
+
+     You'll also have to add a method to retrieve the patches
+     list, getPatches().
+
+     (One (1) line in the __init__ method, nine (9) lines in the
+      loadFile method, and one (1) line for the getPatches()
+      method.)
+
+  6. The changes to myGraphics.py are again in the method
+     cl_world > create_graphics_object().  Now it takes the new
+     resolution parameter.
+
+     After drawing the faces, I added a loop to display each
+     patch.  This loop gets each patch specification from the
+     model and makes a list of the corresponding transformed
+     x, y, z coordinates of each of the 16 control points (using
+     the model's getTransformedVertex() method).
+
+     It passes this list of transformed control points and the
+     desired resolution to a new routine called
+     'resolveBézierPatch' (which I'll discuss in a moment) that
+     returns the list of points that are on the generated Bézier
+     surface.
+
+     Using the method described in "4303 Bézier computation.pdf",
+     that list of points is converted to triangles which are
+     displayed.
+
+     (This loop is twelve (12) lines of code.  It uses a new
+      routine, drawTriangle( canvas, v1, v2, v3, portal, doClip ),
+      so I don't have to write that code twice.  drawTriangle()
+      is nine (9) lines of code.)
+
+  7. Finally, the resolveBézierPatch( resolution, controlPts )
+     function.  I put this function in a separate file just to be
+     tidy.  It takes the desired resolution and a list of the
+     transformed control points for a Bézier patch and returns a
+     list of the generated points for the surface.
+
+     The generated points are created using the method described
+     in the "4303 Bézier computation.pdf" handout.  Take the
+     pseudocode and translate it to Python.  I broke it up into
+     one function that looped over u and v and called another
+     function to calculate each point.  (Nine (9) lines of code.)
+
+     The calculate-each-point function called another function to
+     calculate the coefficients for the given u, v values and then
+     looped over the coefficients and summed the point products.
+     (Thirteen (13) lines of code.)
+
+     The calculate-coefficients function took the given u, v
+     values and calculated each of the 16 coefficients.  (Twenty
+     (20) lines of code.)
+
+  8. So that's what?  About 90 new lines of code in total?  (Not
+     counting blank lines and the import lines.)
+
+     Not bad for a program that will now display arbtrarily
+     complex meshes including not only faces (triangles) but also
+     arbitrarily detailed Bézier patches all of which are possibly
+     Euler rotated and in parallel OR perspective projection and
+     clip triangles that are outside the viewing region.
+
+  9. The screenshots were captured with a canvas size of
+     800 x 700.  The settings are indicated in the name of the
+     file: the first number is the resolution, the next three are
+     the φ, θ, and ψ angles.  Clipping and Euler rotation were
+     active for all screenshots; Perspective was inactive.
+
+ 10. After you submit your zip file on Blackboard, download it
+     from Blackboard and check that your submission is in the
+     proper format, that the programs run and print the correct
+     output, and that you updated the header lines correctly in
+     each of the source files.
+
+ 11. Are you CERTAIN you complied with all of these nit-picking
+     instructions?  Really?  Maybe you ought to check just one
+     more time. :)
+
+#----------------------------------------------------------------------

@@ -1,0 +1,166 @@
+#----------------------------------------------------------------------
+Programming Assignment 02a
+
+#----------------------------------------------------------------------
+Purpose:
+
+  * Get some practice writing (relatively) simple Python code
+
+  * Create a Python3 class for reading and holding model data.
+
+#----------------------------------------------------------------------
+Background:
+
+  * As we progress in this course, your programs will need to read
+    model data from text files and construct data objects to hold
+    that data.
+
+  * A model file is a text file.  Each line in the model file will
+    either be blank (or consist entirely of whitespace characters)
+    or will start with one of the following characters:
+
+    # -- indicates a comment line.
+
+    v -- indicates a vertex line.
+           The rest of the line will be 3 floats.
+
+    f -- indicates a face line.
+           The rest of the line will be 3 ints.
+
+  * As the lines are read, blank lines and comment lines are to
+    be ignored.
+
+  * The data on the v and f must be saved.  There are details as
+    to how the data has to be saved in the ModelData.py template
+    file comments.
+
+  * There may be any number (in fact, possibly thousands) of v and
+    f lines.
+
+  * Any deviation from this specification should be reported as an
+    error when the file is read, but continue reading so subsequent
+    errors will be reported as well.
+
+#----------------------------------------------------------------------
+Tasks:
+
+  1. Download HMWK_02a_dalioba.zip from Blackboard.
+
+  2. Unzip the file somewhere convenient.
+
+  3. Change 'dalioba' in the name of the directory to your NetID.
+     (Your NetID is three letters followed by four or five digits.
+      The directory name will now be something like
+      'hmwk_02a_abc1234'.)
+
+  4. Look in that directory.
+
+  5. Change the header lines in the ModelData.py file.
+
+      -- Line 1:  Family name first, then a comma, then
+                  personal name.
+
+      -- Line 2:  Your NetID.
+
+      -- Line 3:  The date you edited the file.
+
+  6. Replace lines 19-61 in the ModelData.py file with your code to
+     do the processing as described above and in the comments in the
+     ModelData.py file.
+
+  7. Try your program out on the supplied pyramid-centered.txt model
+     file.  You should get the same answers as shown on my run.
+     The results are in results.txt.  The screenshot is
+     ModelDataTest.png
+
+  8. Try your program out on the errors.txt file.  You should get the
+     same errors as shown on my run.  The error results are in
+     resultsError.txt.  The screenshot is ModelDataErrorTest.png.
+
+#----------------------------------------------------------------------
+Submission:
+
+Make a zipfile of your 'hmwk_02a_abc1234' directory (with your source
+file in it) and submit it on Blackboard as your results for this
+assignment.
+
+Your submission will be run against some other model data files that
+I have and will score points for properly processing blank, #, f,
+and v lines as well as for detecting and reporting format errors.
+
+#----------------------------------------------------------------------
+Hints:
+  1. Ensure your programs compile and run correctly.  Not compiling
+     or not generating the correct output will cost you points.
+     
+     Compare your program output to that shown in the results.txt
+     file.  Match it EXACTLY.  ('EXACTLY' means absolutely
+     character-by-character the same.)
+
+  2. Ensure that you update the three header lines in each of the
+     source files with YOUR name (family name first, then a comma,
+     then your personal name), YOUR NetID, and the date you edit
+     the file.
+
+     Not updating the header lines properly will cost you points.
+
+  3. Ensure your submission is packaged EXACTLY as described above.
+
+      -- Your submission should be a ZIP FILE (not a tar, rar, gz,
+         or any other kind of compressed file).
+
+      -- The zip file should be named 'hmwk_02a_abc1234.zip' (with
+         'abc1234' replaced with YOUR NetID).
+
+      -- This zip file should have ONE item in it, a directory
+         named 'hmwk_02a_abc1234'  (with 'abc1234' replaced with
+         YOUR NetID).
+
+      -- Your source files should be in that directory.
+
+     Submissions in the wrong format score ZERO points.
+
+  4. Here's the first few lines of my version of loadFile(). By doing
+     the read this way, replacing '\r' characters, and splitting on
+     '\n' characters, lines will be a list of the lines from the
+     input file.  The for loop uses enumerate so that there's an
+     indication (index) of which line is being processed.  That's
+     useful when printing error messages.
+
+        with open( inputFile, 'r' ) as fp :
+          lines = fp.read().replace('\r', '' ).split( '\n' )
+
+        for ( index, line ) in enumerate( lines, start = 1 ) :
+          line = line.strip()
+
+          # Your line-by-line processing goes here ...
+
+  5. You can convert a string to an int in Python thusly:
+
+    try :
+      intVar = int( stringVar )
+
+    except :
+      # put something here that complains that stringVar is not
+      # a legal int.
+
+  6. You can convert a string to a float in Python thusly:
+
+    try :
+      floatVar = float( stringVar )
+
+    except :
+      # put something here that complains that stringVar is not
+      # a legal float.
+
+  7. After you submit your zip file on Blackboard, download it from
+     Blackboard and check that your submission is in the proper
+     format, that the programs run and print the correct output,
+     and that you updated the header lines correctly in each of
+     the source files.
+
+  8. Are you CERTAIN you complied with all of these nit-picking
+     instructions?  Really?  Maybe you ought to check just one
+     more time. :)  
+
+#----------------------------------------------------------------------

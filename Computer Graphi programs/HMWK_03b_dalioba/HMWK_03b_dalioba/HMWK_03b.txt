@@ -1,0 +1,159 @@
+#----------------------------------------------------------------------
+Programming Assignment 03b
+
+#----------------------------------------------------------------------
+Purpose:
+
+  * Add clipping to parallel projection mesh display program.
+
+#----------------------------------------------------------------------
+Background:
+
+  * In PA 03a,you created a program that could (a) load a mesh
+    file, (b) display the loaded mesh by parallel projecting and
+    drawing triangles (and the enclosing viewport rectangle), and
+    (c) clear the display of any drawn triangles (and the viewport
+    rectangle).
+
+  * The next step is to clip lines that are outside the viewport
+    rectangle so the displayed mesh does not overflow the accepted
+    drawing area.
+
+  * Lines will be clipped using the Cohen-Sutherland method just
+    before they are drawn.
+
+#----------------------------------------------------------------------
+Tasks:
+
+  1. Download HMWK_03b_dalioba.zip from Blackboard.
+
+  2. Unzip the file somewhere convenient.
+
+  3. Change 'dalioba' in the name of the directory to your NetID.
+     (Your NetID is three letters followed by four or five digits.
+      The directory name will now be something like
+      'hmwk_03b_abc1234'.)
+
+  4. Look in that directory.
+
+  5. I am including the CohenSutherland.py file so you do not have
+     to write it yourself (as it's pretty much given on the
+     Wikipedia page).  Also, I am including the reference versions
+     of main.py, myWidgets.py, myGraphics.py, ModelData.py, and
+     constructTransform.py so those of you who had trouble with
+     PA 03a can catch up on this assignment.
+
+     Be sure you update the header lines on any files you change!
+
+  6. You have to make some changes to the myWidgets.py file to
+     supply the 'Clip' entry in the settings menu and to supply
+     that setting when doing the draw.
+
+  7. You next have to make some changes to the myGraphics.py file
+     so the create_graphic_objects() method will accept the 'Clip'
+     setting and then do the line clipping, if necessary.
+
+  8. Try out your nifty mesh clipping and drawing program using
+     the cow-needs-clip.txt and bunny-YUp-needs-clip.txt mesh
+     files.  First display the meshes with the Clip option unset,
+     then reset the display and display the meshes with the Clip
+     option set.  You should see something like what's shown in
+     the screenshot files.
+
+#----------------------------------------------------------------------
+Submission:
+
+Make a zipfile of your 'hmwk_03b_abc1234' directory (where
+'abc1234' is replaced with YOUR NetID) and submit it on
+Blackboard as your results for this assignment.
+
+Your submission should be a zipfile that has exactly one item in
+it, a directory named 'hmwk_03b_abc1234' (where 'abc1234' is
+YOUR NetID).  Inside that directory should be the source files
+for your solution.  All you really need to submit are the Python
+files (ModelData.py, constructTransform.py, main.py, myWidgets.py,
+myGraphics.py, and CohenSutherland.py).
+
+#----------------------------------------------------------------------
+Hints:
+  1. Ensure your submission is packaged EXACTLY as described
+     above.  Submissions in the wrong format score ZERO points.
+
+  2. Don't forget to import clipLine (from CohenSutherland.py) at
+     the top of myGraphics.py.
+
+  3. Tk boolean variables are created by a call to
+     tk.BooleanVar().  If you create one by evaluating
+     var = tk.BooleanVar(), you can set its value to False by
+     calling var.set( False ).  You can get the value of such a
+     variable by evaluating (var.get() == 1).
+
+     (For some idiotic reason, tk returns the value of a boolean
+     variable as 0 or 1 instead of False or True, even though it
+     accepts False and True as values when setting the variable.
+     WTF?)
+
+  4. A 'checkbutton' entry can be added to a menu by using the
+     add_checkbutton() method.  You have to supply two parameters
+     to this method, label, which is the text that shows up in
+     the menu, and variable, which is a tk.BooleanVar() that is
+     used to hold the current state of the entry.  To find out
+     if a check button is checked, get the value of its associated
+     tk.BooleanVar() and see if its value is 1 (True, Checked,
+     whatever you want to call it) or 0 (False, Unchecked, ...).
+
+  5. FYI, to get all this to work, I made NO changes to the
+     reference implementation of main.py, ModelData.py, and
+     constructTransform.py from PA 03a.
+
+  6. In myWidgets.py I added two (2) lines of code to
+     cl_widgets > __init__(), to create a tk boolean variable to
+     hold the 'Clip' setting.
+
+     In the cl_menu > __init__() method, you can delete the
+     'Item 1' and 'Item 2' entries in the 'Setting' menu and
+     instead insert a check button with the lable 'Clip' and
+     have it use as its variable the tk boolean variable you
+     created in cl_widgets > __init__().  (One (1) line of code.)
+
+     Also in myWidgets.py, I enhanced the cl_toolbar method
+     draw_callback() to retrieve the state of the 'Clip' setting
+     by looking at the tk boolean variable created in the
+     cl_widgets > __init__() and to pass its value to
+     create_graphic_objects().  One line of code to retrieve the
+     'Clip' setting and one added parameter to the
+     create_graphic_objects() call.
+
+  7. The only changes to myGraphics.py (aside from the import
+     mentioned above) were in the method cl_world >
+     create_graphics_object() so that it would take the extra
+     doClip parameter and clip the face triangles as required.
+     That function is now about twenty (20) lines of code in
+     total, instead of six (6).
+
+     If the doClip parameter is False, just draw the triangle the
+     same way you did in PA 03a.
+
+     If the doClip parameter is True, after you get the
+     transformed versions of the three vertices for each face, you
+     have to send the vertices one pair at a time (v1 and v2, v2
+     and v3, v3 and v1) to the clipLine() routine (along with the
+     portal) to see if the line should be drawn at all and if so
+     what the end points should be.
+
+     If clipLine returns doDraw as False, don't draw anything for
+     that pair of vertices.  If doDraw is returned as True, draw
+     the line using the revised coordinates that were returned.
+
+  8. So that's what?  About 20 new lines of code in total?  (Not
+     counting blank lines and the import lines.)
+
+     Not bad for a program that will now display arbtrarily
+     complex meshes in parallel projection and clip triangles that
+     are outside the viewing region.
+
+  9. The Bunny screenshots were captured with a canvas size of
+     600 x 600.  The Cow screenshots wer captured with a canvas
+     size of 830 x 500.
+
+#----------------------------------------------------------------------

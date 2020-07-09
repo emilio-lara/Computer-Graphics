@@ -1,0 +1,168 @@
+#----------------------------------------------------------------------
+Programming Assignment 02b
+
+#----------------------------------------------------------------------
+Purpose:
+
+  * Get some practice writing (relatively) simple Python code
+
+  * Extend the Python3 class for reading and holding model data.
+
+  * Create a Python3 function for computing 3D -> 2D transform (in
+    the parallel projection case).
+
+#----------------------------------------------------------------------
+Background:
+
+  * As we progress in this course, your programs will need to read
+    model data from text files and construct data objects to hold
+    that data.
+
+  * The data on the w and s lines must be saved.  There are
+    details as to how the data has to be saved in the ModelData.py
+    template file comments.
+
+  * There may be zero or more w and s lines.  If there is more
+    than one legal w line, the subsequent lines should be noted
+    as duplicates.  If there is more than one legal s line, the
+    subsequent lines should be noted as duplicates.
+
+  * The data saved for the World and Viewport specifications
+    should be that of the last legal w or s line.
+
+  * Any deviation from this specification should be reported as an
+    error when the file is read, but continue reading so subsequent
+    errors will be reported as well.
+
+  * The transform to go from 3D to 2D (parallel projection) is
+    described in the handout "4303 Projection Parallel.pdf",
+    previously posted in the Course Materials section on
+    Blackboard.
+
+    Refer to this handout for the formulae for fx, fy, gx, gy, sx,
+    sy, ax, and ay.
+
+#----------------------------------------------------------------------
+Tasks:
+
+  1. Download HMWK_02b_dalioba.zip from Blackboard.
+
+  2. Unzip the file somewhere convenient.
+
+  3. Change 'dalioba' in the name of the directory to your NetID.
+     (Your NetID is three letters followed by four or five digits.
+      The directory name will now be something like
+      'hmwk_02b_abc1234'.)
+
+  4. Look in that directory.
+
+  5. Change the header lines in the ModelData.py and
+     constructTransform.py files.
+
+      -- Line 1:  Family name first, then a comma, then
+                  personal name.
+
+      -- Line 2:  Your NetID.
+
+      -- Line 3:  The date you edited the file.
+
+  6. Replace lines 64-87 in the ModelData.py file with your code
+     to do the processing as described above and in the comments
+     in the ModelData.py file.
+
+  7. Try your program out on the supplied Bunny.txt model file.
+     You should get the same answers as shown on my run.  These
+     results are in results.txt.  The screenshot is
+     ModelDataTest.png
+
+  8. Try your program out on the errors.txt file.  You should get
+     the same errors as shown on my run.  The error results are in
+     resultsError.txt.  The screenshot is ModelDataErrorTest.png.
+
+  9. Replace lines 7-12 in the constructTransform.py file with
+     your code to compute fx, fy, gx, gy, sx, sy, ax, and ay.
+     Ensure the you return ax, ay, sx, and sy in that order and
+     as a tuple.
+
+ 10. Try your constructTransform function out by running that
+     Python file as shown in the constructTransform.png screen
+     shot.  You should get the same results as given in the
+     resultsTransform.txt file.
+
+#----------------------------------------------------------------------
+Submission:
+
+Make a zipfile of your 'hmwk_02b_abc1234' directory (with your source
+file in it) and submit it on Blackboard as your results for this
+assignment.
+
+Your ModelData.py submission will be run against some other model
+data files and will score points for properly processing blank, #,
+f, v, w, and s lines as well as for detecting and reporting
+unrecognized line, duplicate lines, and format errors.  Proper
+data packaging is also scored.
+
+Your constructTransform.py submission will be run against some
+other World, Viewport, and canvas size data and will score points
+for proper computation and data packaging.
+
+#----------------------------------------------------------------------
+Hints:
+  1. Ensure your programs compile and run correctly.  Not compiling
+     or not generating the correct output will cost you points.
+
+     Compare your ModelData.py program output to that shown in the
+     results.txt file.  Match it EXACTLY.  ('EXACTLY' means
+     absolutely character-by-character the same.)
+
+     Compare your constructTransform.py program output to that
+     shown in the constructTransform.txt file.  Match it EXACTLY.
+     ('EXACTLY' means absolutely character-by-character the same.)
+
+  2. Ensure that you update the three header lines in each of the
+     source files with YOUR name (family name first, then a comma,
+     then your personal name), YOUR NetID, and the date you edit
+     the file.
+
+     Not updating the header lines properly will cost you points.
+
+  3. Ensure your submission is packaged EXACTLY as described above.
+
+      -- Your submission should be a ZIP FILE (not a tar, rar, gz,
+         or any other kind of compressed file).
+
+      -- The zip file should be named 'hmwk_02b_abc1234.zip' (with
+         'abc1234' replaced with YOUR NetID).
+
+      -- This zip file should have ONE item in it, a directory
+         named 'hmwk_02b_abc1234'  (with 'abc1234' replaced with
+         YOUR NetID).
+
+      -- Your source files should be in that directory.
+
+     Submissions in the wrong format score ZERO points.
+
+  4. The ModelData.py file has the reference solution to Homework
+     02a in it so you don't have to use your answer to that
+     homework (unless you want to! :).  Starting with the supplied
+     ModelData.py template file, you have to add only the
+     processing to deal with the w and s lines, so it shouldn't
+     take all that much time.  (In the reference solution for
+     Homework 02b, this processing is 12 lines of code for each
+     of the w and s cases, so 24 lines of code in total.)
+
+  5. The reference solution for the constructTransform function is
+     9 line of code, one each for fx, fy, gx, gy, sx, sy, ax, and
+     ay and then a return statement.  Trivial!
+
+  6. After you submit your zip file on Blackboard, download it from
+     Blackboard and check that your submission is in the proper
+     format, that the programs run and print the correct output,
+     and that you updated the header lines correctly in each of
+     the source files.
+
+  7. Are you CERTAIN you complied with all of these nit-picking
+     instructions?  Really?  Maybe you ought to check just one
+     more time. :)
+
+#----------------------------------------------------------------------

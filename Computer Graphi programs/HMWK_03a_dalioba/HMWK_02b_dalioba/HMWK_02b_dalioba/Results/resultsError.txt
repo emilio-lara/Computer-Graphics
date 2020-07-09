@@ -1,0 +1,21 @@
+Line 6 'q   Abercrombie and Fitch' is unrecognized.
+Line 9 is a malformed window spec.
+Line 10 is a malformed viewport spec.
+Line 13 is a malformed vertex spec.
+Line 19 is a malformed vertex spec.
+Line 20 is a malformed vertex spec.
+Line 21 is a malformed vertex spec.
+Line 24 is a malformed face spec.
+Line 27 is a malformed face spec.
+Line 30 is a malformed face spec.
+Line 31 is a malformed face spec.
+Line 32 is a malformed face spec.
+Line 45 is a duplicate window spec.
+Line 46 is a duplicate viewport spec.
+errors.txt: 1 vertex, 0 faces
+First 3 vertices:
+     (1.0, 2.0, 3.0)
+First 3 faces:
+Window line    : (9.0, 10.0, 11.0, 12.0)
+Viewport line  : (13.0, 14.0, 15.0, 16.0)
+Center         : (1.0, 2.0, 3.0)
